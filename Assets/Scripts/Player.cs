@@ -6,11 +6,24 @@ public class Player : MonoBehaviour
 {
     // Variables for game and game objects
     private readonly float _speed = 3.5f;
-
+    [SerializeField]
+    private GameObject _laserPrefab;
+    [SerializeField]
+    private float _fireRate = 0.15f;
+    [SerializeField]
+    private float _nextFire = 0.0f;
+    [SerializeField]
+    private int _lives = 3;
+    private Spawn_Manager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Spawn manager is null.");
+        }
 
     }
 
@@ -18,6 +31,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+        {
+            ShootLaser();
+        }
+        
     }
     void CalculateMovement()
     {
@@ -33,6 +51,22 @@ public class Player : MonoBehaviour
         else if (transform.position.x < -11.3f)
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
+        }
+    }
+    void ShootLaser()
+    {
+        // player hits space key, spawn the laser object
+        
+        _nextFire = Time.time + _fireRate;
+        Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+    }
+    public void Damage()
+    {
+        _lives--;
+        if (_lives < 1)
+        {
+            _spawnManager.OnPlayerDeath();
+            Destroy(gameObject);
         }
     }
 }

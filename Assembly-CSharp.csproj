@@ -56,7 +56,16 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Laser.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\Spawn_Manager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\GameDevHQ\FileBase\Plugin\Filebase.dll" />
+    <None Include="Assets\GameDevHQ\FileBase\Plugin\README.txt" />
+    <None Include="Assets\GameDevHQ\FileBase\Plugin\Newtonsoft.Json.XML" />
+    <None Include="Assets\GameDevHQ\FileBase\Plugin\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -310,6 +319,12 @@
     </Reference>
     <Reference Include="ReportGeneratorMerged">
       <HintPath>Library\PackageCache\com.unity.testtools.codecoverage@1.2.2\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
+    </Reference>
+    <Reference Include="Filebase">
+      <HintPath>Assets\GameDevHQ\FileBase\Plugin\Filebase.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\GameDevHQ\FileBase\Plugin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Android.Types">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Types.dll</HintPath>
