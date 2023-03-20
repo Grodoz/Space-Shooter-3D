@@ -360,4 +360,6 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
+FodyWeavers.xsd"Temp/*" 
+/Temp/FSTimeGet-57b60ef8ed56ff04c951398a7365f6e3
+/Temp
