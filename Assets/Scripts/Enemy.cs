@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
             if (player != null)
             {
                 player.Damage();
+                Destroy(this.gameObject);
             }
         }
         // if other is laser - destroy us and the laser
