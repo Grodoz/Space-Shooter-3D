@@ -23,14 +23,21 @@ public class Player : MonoBehaviour
     private bool _isShield = false;
     [SerializeField] private GameObject _shieldVisualizer;
     [SerializeField] private GameObject _tripleShotPrefab;
+    [SerializeField] private int _score;
+    private UI_Manager _uiManager;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         if (_spawnManager == null)
         {
             Debug.LogError("Spawn manager is null.");
+        }
+        if (_uiManager == null)
+        {
+            Debug.LogError("UI Manager is null.");
         }
 
     }
@@ -91,6 +98,7 @@ public class Player : MonoBehaviour
             return;
         }
         _lives--;
+        _uiManager.UpdateLives(_lives);
         if (_lives < 1)
         {
             _spawnManager.OnPlayerDeath();
@@ -132,5 +140,10 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _isShield = false;
+    }
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
     }
 }
