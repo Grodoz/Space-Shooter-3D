@@ -19,9 +19,11 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     private Spawn_Manager _spawnManager;
     private bool _isTripleShot;
-    private bool _isSpeedBoost = false;
-    private bool _isShield = false;
+    private bool _isSpeedBoost;
+    private bool _isShield;
     [SerializeField] private GameObject _shieldVisualizer;
+    [SerializeField] private GameObject _rightEngine;
+    [SerializeField] private GameObject _leftEngine;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private int _score;
     private UI_Manager _uiManager;
@@ -98,6 +100,14 @@ public class Player : MonoBehaviour
             return;
         }
         _lives--;
+        if (_lives == 2)
+        {
+            _leftEngine.SetActive(true);
+        }
+        else if (_lives == 1)
+        {
+            _rightEngine.SetActive(true);
+        }
         _uiManager.UpdateLives(_lives);
         if (_lives < 1)
         {
