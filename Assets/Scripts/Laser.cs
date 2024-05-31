@@ -4,50 +4,104 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 8.0f;
-    private bool _isEnemyLaser = false;
-
-    // Update is called once per frame
-    void Update()
+    public enum laserIDs
     {
-        if (_isEnemyLaser == false)
+        Normal,
+        LaserBeam
+    }
+
+    public laserIDs laserType;
+    private int _speed = 8;
+    private float _xLimit = 11.0f;
+    private float _yLimit = 6.0f;
+    private bool _isPlayerLaser = true;
+    [SerializeField] private GameObject _explosionPrefab;
+    private GameObject _explosionInstance;
+
+    private void Update()
+    {
+        if (_isPlayerLaser)
         {
             MoveUp();
         }
         else
         {
-            MoveDown();
+            if (laserType == laserIDs.Normal)
+            {
+                MoveDown();
+            }
         }
     }
+
     void MoveUp()
     {
-        transform.Translate(_speed * Time.deltaTime * Vector3.up);
-        if (transform.position.y > 8f)
+        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        if ((Mathf.Abs(transform.position.y) > _yLimit) | (Mathf.Abs(transform.position.x) > _xLimit))
         {
-            if (transform.parent != null)
+            if (transform.parent.name == "Triple_Shot")
             {
                 Destroy(transform.parent.gameObject);
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
     void MoveDown()
     {
-        transform.Translate(_speed * Time.deltaTime * Vector3.down);
-        if (transform.position.y < -8f)
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if ((transform.position.y > -_yLimit) | (Mathf.Abs(transform.position.x) > _xLimit))
         {
-            if (transform.parent != null)
+            if ((transform.parent != null) && (transform.parent.name != "EnemyLaserStandard_Container"))
             {
                 Destroy(transform.parent.gameObject);
             }
-            Destroy(gameObject);
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
-    public void AssignEnemyLaser()
+    public void PlayerLaser()
     {
-        _isEnemyLaser = true;
+        _isPlayerLaser = true;
+    }
+
+    public void EnemyLaser()
+    {
+        _isPlayerLaser = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player" && _isPlayerLaser == false)
+        {
+            Player player = other.GetComponent<Player>();
+            if (player != null)
+            {
+                player.Damage();
+            }
+            if (laserType == laserIDs.Normal)
+            {
+                ExplosionAnim(transform.position);
+                Destroy(GetComponent<Collider2D>());
+                Destroy(GetComponent<SpriteRenderer>());
+                Destroy(gameObject, 2.7f);
+            }
+            else if (laserType == laserIDs.LaserBeam)
+            {
+                ExplosionAnim(other.transform.position);
+            }
+        }
+    }
+
+    private void ExplosionAnim(Vector3 _explosionPosition)
+    {
+        _explosionInstance = Instantiate(_explosionPrefab, _explosionPosition, transform.rotation);
+        Destroy(_explosionInstance, 2.7f);
     }
 }

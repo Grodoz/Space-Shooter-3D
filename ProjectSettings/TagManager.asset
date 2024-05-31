@@ -7,11 +7,12 @@ TagManager:
   - Enemy
   - Laser
   - Powerup
+  - SuperLaser
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Post Processing
   - Water
   - UI
   - 
